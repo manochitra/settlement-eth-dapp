@@ -2,12 +2,12 @@ pragma solidity ^0.4.18;
 
 import "truffle/Assert.sol";
 import "truffle/DeployedAddresses.sol";
-import "../contracts/Voting.sol";
+import "../contracts/Events.sol";
 
 contract TestAdoption {
-  Voting v = Voting(DeployedAddresses.Voting());
+  Events v = Events(DeployedAddresses.Events());
 
-  function testVote() public {
+  function testEvent() public {
     
   }
 }
