@@ -22,17 +22,19 @@ A decentralized settlement event contract application built on the Ethereum bloc
  
  * To Execute geth console commands in another terminal while main terminal is started:</br>
    ```geth attach ipc://home/someone/privchain/geth.ipc```
-  </br>
+  
+  
  * To Create Account/wallet :</br>
  ```personal.newAccount```
- </br>
+ 
  * To Unlock Account : </br>
  ```personal.unlockAccount("address","password")```
- </br>
-* To Start the Mine :</br>
+ 
+ 
+ * To Start the Mine :</br>
 	```miner.start()``` </br>
 
-## TRUFFLE COMMANDS :
+# TRUFFLE COMMANDS :
 
 * ```truffle compile``` -  This will compile the all the .sol file and create corresponding JSON. </br>
 * ``` truffle migrate ``` - Generated JSON will migrated to EVM bytecode to be understood by Ethereum.</br>
