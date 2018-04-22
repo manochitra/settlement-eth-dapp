@@ -25,9 +25,10 @@ A decentralized settlement event contract application built on the Ethereum bloc
   </br>
  * To Create Account/wallet :</br>
  ```personal.newAccount```
+ </br>
  * To Unlock Account : </br>
  ```personal.unlockAccount("address","password")```
- 
+ </br>
 * To Start the Mine :</br>
 	```miner.start()``` </br>
 
@@ -35,7 +36,7 @@ A decentralized settlement event contract application built on the Ethereum bloc
 
 * ```truffle compile``` -  This will compile the all the .sol file and create corresponding JSON. </br>
 * ``` truffle migrate ``` - Generated JSON will migrated to EVM bytecode to be understood by Ethereum.</br>
-* ```truffle develop `` - Console used to deploy the contract and sending transactions .</br>
+* ```truffle develop ``` - Console used to deploy the contract and sending transactions .</br>
 
 
 
