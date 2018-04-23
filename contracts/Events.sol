@@ -24,4 +24,11 @@ contract Events {
         // Create new Candidate Struct with name and saves it to storage.
         events[id] = Event(name,data);
      }  
+     
+      function getCandidate(uint id) public view returns (bytes32 ,bytes32){
+       
+       return (events[id].eventname,events[id].data);
+     }  
+     
+     
 }
