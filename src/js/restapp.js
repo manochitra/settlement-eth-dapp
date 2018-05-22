@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+require('babel-core/register');
+require('babel-polyfill');
 const eventsRoutes = require("./events");
 
 
