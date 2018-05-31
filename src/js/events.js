@@ -14,13 +14,13 @@ router.post('/', (req, res, next) => {
         tranamount: req.body.tranamount
     };
     console.log(eventData);
-   
+    settlementevent(eventData);
     res.status(201).json({
         message: 'Event is pushed',
         event: eventData
        
     });
-    settlementevent(eventData);
+   
 });
 
 
@@ -28,8 +28,9 @@ router.post('/', (req, res, next) => {
  function settlementevent(eventData) {
 	 console.log("Entered! ");
 	 console.log(eventData);
-	EventContract.setProvider(window.web3.currentProvider)
-    EventContract.defaults({from: window.web3.eth.accounts[0],gas:6721975})
+	 const web3 = new Web3( new Web3.providers.HttpProvider("http://localhost:8545") );
+	EventContract.setProvider(web3.currentProvider)
+    EventContract.defaults({from: web3.eth.accounts[0],gas:65000000000})
     EventContract.deployed().then(function(instance){
       instance.addSettlementEvent("PARSER","10","Sucess").then(function(result){
     	  console.log("Success! ");

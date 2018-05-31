@@ -36,19 +36,8 @@ contract SettlementEvents {
            	 windows[aWinId].eventIds.push(eventId);
         }
         SettlementWindowEvent(aWinId);
-        
+       
     }  
-      function getSettlementEventByWindowId(int gWinId) public view returns (int){
-      		 if( checkifWindowIdExists(gWinId) == true){
-          		 		for(uint256 i = 0; i < windows[gWinId].eventIds.length; i++){
-        				 return windows[gWinId].eventIds[i];
-     				 }
-      		 }
-     }  
-     
-       function getEvent(int id) public view returns (string){
-              return (settlementEvent[id].eventData);
-     }  	
      
      function checkifWindowIdExists(int winId) public view returns(bool){
      	return windows[winId].isValue;
