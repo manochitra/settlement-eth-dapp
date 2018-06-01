@@ -37,7 +37,22 @@ contract SettlementEvents {
         }
         SettlementWindowEvent(aWinId);
        
-    }  
+    }
+    
+    function getSettlementEventByWindowId(int gWinId,uint eventIndex) public view returns (string){
+      		 if( checkifWindowIdExists(gWinId) == true){
+        				 return getEvent(windows[gWinId].eventIds[eventIndex]);
+     				 
+      		 }
+     }
+     
+     function getSettlementEventByWindowIdLength(int gWindId) public view returns (uint256) {
+        return windows[gWindId].eventIds.length;
+    }
+     
+     function getEvent(int id) public view returns (string){
+              return (settlementEvent[id].eventData);
+     }
      
      function checkifWindowIdExists(int winId) public view returns(bool){
      	return windows[winId].isValue;
