@@ -23,14 +23,12 @@ router.post('/', (req, res, next) => {
    
 });
 
-
-
  function settlementevent(eventData) {
 	 console.log("Entered! ");
 	 console.log(eventData);
 	 const web3 = new Web3( new Web3.providers.HttpProvider("http://localhost:8545") );
 	EventContract.setProvider(web3.currentProvider)
-    EventContract.defaults({from: web3.eth.accounts[0],gas:65000000000})
+    EventContract.defaults({from: web3.eth.accounts[0],gas:650000000000})
     EventContract.deployed().then(function(instance){
       instance.addSettlementEvent("PARSER","10","Sucess").then(function(result){
     	  console.log("Success! ");
@@ -41,5 +39,31 @@ router.post('/', (req, res, next) => {
     })
   };
 
+  router.post('/getEvent',(req,res,next) => {
+		reqWindowId = req.body.windowId;
+		res.status(200).json(getSettlementEvent(reqWindowId));
+	});
+
+  
+function getSettlementEvent(windowId) {
+	  
+	  var eventCount;
+	  var i;
+	  var response = Array();
+	  	EventContract.setProvider(window.web3.currentProvider)
+	    EventContract.defaults({from: window.web3.eth.accounts[0],gas:650000000000})
+	    EventContract.deployed().then(function(instance){
+	    	instance.getSettlementEventCountByWindowId(windowId).then(function(result){
+	    		for(i=0;i<result;i++){
+	    			response[i] = instance.getSettlementEventByWindowId(windowId,i);
+	    		}
+	    	})
+	    }).catch(function(err){ 
+	        console.error("ERROR! " + err.message)
+	    })
+	  return response;
+  };
+
+  
   
 module.exports = router;

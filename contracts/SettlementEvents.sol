@@ -25,19 +25,34 @@ contract SettlementEvents {
 
     function addSettlementEvent(int aWinId,int eventId,string data) public {
         settlementEvent[eventId] =  SettlementEvent(data);
-      	int[] storage ids;
         if(!checkifWindowIdExists(aWinId)){
-       		 ids.push(eventId);
-       		 windows[aWinId].eventIds=ids;
-       		 windows[aWinId].isValue=true;
+            Windows  memory currentWindwows =  Windows(true,new int[](0));
+            windows[aWinId]=currentWindwows;
+            windows[aWinId].eventIds.push(eventId);
         }else{
-          // int[] existingIds= windows[aWinId].eventIds   ; 
-          // existingIds.push(eventId);
-           	 windows[aWinId].eventIds.push(eventId);
+           	int[] ids = windows[aWinId].eventIds;
+           	ids.push(eventId);
+           	windows[aWinId].eventIds=ids;
         }
         SettlementWindowEvent(aWinId);
        
-    }  
+    }
+    
+    function getSettlementEventByWindowId(int gWinId,uint eventIndex) public view returns (string){
+      		 if( checkifWindowIdExists(gWinId) == true){
+      		        int currentEvemt=(windows[gWinId].eventIds[eventIndex]);
+        				return  getEvent(currentEvemt);
+     				 
+      		 }
+     }
+     
+     function getSettlementEventCountByWindowId(int gWindId) public view returns (uint256) {
+        return windows[gWindId].eventIds.length;
+    }
+     
+     function getEvent(int id) public view returns (string){
+              return (settlementEvent[id].eventData);
+     }
      
      function checkifWindowIdExists(int winId) public view returns(bool){
      	return windows[winId].isValue;
