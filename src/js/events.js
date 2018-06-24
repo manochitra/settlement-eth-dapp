@@ -72,14 +72,13 @@ function getSettlementEvent(reqWindowId) {
 	   	    				console.log(output);
 	   	    				response[i]= output;
 	   	    				console.log("respomse"+response[i]);
-	   	    			 return response;
 	   	    			});
 	    		}
 	    	}).catch(function(err){ 
 	        console.error("ERROR! " + err.message)
 	    })
 	   console.log("Response"+ response);
-	 
+	 return response;
   };
 
   
