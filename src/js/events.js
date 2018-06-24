@@ -5,63 +5,81 @@ import { default as contract } from "truffle-contract"
 import eventArtifacts from "../../build/contracts/SettlementEvents.json"
 var EventContract = contract(eventArtifacts)
 var eventData="";
+var deployed_address="";
 //var settlement = require('./app.js');
 router.post('/', (req, res, next) => {
     eventData = {
-        windowId: req.body.windowId,
-        eventid: req.body.eventid,
-        currencycode: req.body.currencycode,
-        tranamount: req.body.tranamount
+    		component:req.body.component,
+    		business:req.body.business,
+    		MerchantName:req.body.MerchantName,
+    		MerchantNumber:req.body.MerchantNumber,
+    		crdNumber:req.body.crdNumber,
+    		txnType:req.body.txnType,
+    		txnAmount:req.body.txnAmount,
+    		windowId: req.body.windowId,	
+    		eventid: req.body.eventid,
     };
-    console.log(eventData);
     settlementevent(eventData);
     res.status(201).json({
         message: 'Event is pushed',
         event: eventData
-       
     });
    
 });
 
+router.get('/',(req,res,next) => {
+	 var reqWindowId = req.query.windowId;
+	 console.log(req.query);
+	 var result =getSettlementEvent(reqWindowId)
+	res.status(200).json(result);
+});
+
+
  function settlementevent(eventData) {
-	 console.log("Entered! ");
-	 console.log(eventData);
+	 console.log("Adding Settlement Event");
 	 const web3 = new Web3( new Web3.providers.HttpProvider("http://localhost:8545") );
 	EventContract.setProvider(web3.currentProvider)
-    EventContract.defaults({from: web3.eth.accounts[0],gas:650000000000})
+    EventContract.defaults({from: web3.eth.accounts[0],gas:650000000})
+	 var value =eventData.windowId + eventData.eventid +eventData.component;
+	console.log(value);
     EventContract.deployed().then(function(instance){
-      instance.addSettlementEvent("PARSER","10","Sucess").then(function(result){
+    	deployed_address=instance.address;
+      instance.addSettlementEvent(parseInt(eventData.windowId),parseInt(eventData.eventid),JSON.stringify(eventData)).then(function(result){
     	  console.log("Success! ");
-    	  return "Success"
+       	  return "Success "+ result;
       })
-    }).catch(function(err){ 
+    }).catch(function(err){  	
       console.error("ERROR! " + err.message)
     })
   };
 
-  router.post('/getEvent',(req,res,next) => {
-		reqWindowId = req.body.windowId;
-		res.status(200).json(getSettlementEvent(reqWindowId));
-	});
-
-  
-function getSettlementEvent(windowId) {
-	  
+   
+function getSettlementEvent(reqWindowId) {
+	console.log("Getting Settlement Event");
+	console.log(reqWindowId);
 	  var eventCount;
 	  var i;
 	  var response = Array();
-	  	EventContract.setProvider(window.web3.currentProvider)
-	    EventContract.defaults({from: window.web3.eth.accounts[0],gas:650000000000})
-	    EventContract.deployed().then(function(instance){
-	    	instance.getSettlementEventCountByWindowId(windowId).then(function(result){
-	    		for(i=0;i<result;i++){
-	    			response[i] = instance.getSettlementEventByWindowId(windowId,i);
+	 
+	  const web3 = new Web3( new Web3.providers.HttpProvider("http://localhost:8545") );
+	  EventContract.setProvider(web3.currentProvider);
+	  EventContract.defaults({from: web3.eth.accounts[0],gas:6500000000});
+	  console.log(deployed_address);
+	  let ins =  EventContract.at(deployed_address);
+	       ins.getSettlementEventCountByWindowId(parseInt(reqWindowId)).then(function(result){
+	    		for(i=0;i<parseInt(result);i++){
+	   	    			ins.getSettlementEventByWindowId(parseInt(reqWindowId),parseInt(i)).then(function(output){
+	   	    				console.log(output);
+	   	    				response[i]= output;
+	   	    				console.log("respomse"+response[i]);
+	   	    			 return response;
+	   	    			});
 	    		}
-	    	})
-	    }).catch(function(err){ 
+	    	}).catch(function(err){ 
 	        console.error("ERROR! " + err.message)
 	    })
-	  return response;
+	   console.log("Response"+ response);
+	 
   };
 
   
